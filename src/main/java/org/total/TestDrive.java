@@ -3,19 +3,13 @@ package org.total;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.client.builder.AwsClientBuilder;
-import com.amazonaws.services.lambda.runtime.Context;
-import com.amazonaws.services.lambda.runtime.RequestHandler;
-import com.amazonaws.services.lambda.runtime.events.S3Event;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.*;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 /**
@@ -66,9 +60,9 @@ public class TestDrive {
     }
 
     private static void uploadObject(final String bucketName,
-                                     final String fullPath) {
+                                     final String key) {
         //fullPath == key
-        CLIENT_S3.putObject(bucketName, fullPath, new File(fullPath));
+        CLIENT_S3.putObject(bucketName, key, new File(key));
     }
 
     private static void downloadObject(final String bucketName,

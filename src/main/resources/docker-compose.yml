@@ -3,13 +3,28 @@ version: '3.1'
 services:
 
   localstack:
-    image: localstack/localstack:latest
-    environment:
-      - AWS_DEFAULT_REGION=us-east-1
-      - EDGE_PORT=4566
-      - SERVICES=lambda,s3
+    image: localstack/localstack-full:latest
     ports:
-      - '4566-4583:4566-4583'
+      - '127.0.0.1:53:53'
+      - '4510-4583:4510-4583'
+      - '443:443'
+      - '${PORT_WEB_UI-8080}:${PORT_WEB_UI-8080}'
+    environment:
+      - SERVICES=lambda,s3, serverless
+      - DEBUG=1
+      - DATA_DIR=/tmp/localstack/data
+      - DOCKER_HOST=unix:///var/run/docker.sock
+      - HOST_TMP_FOLDER=${TMPDIR}
+      - AWS_DEFAULT_REGION=us-east-1
+      - AWS_REGION=us-east-1
+      - AWS_SECRET_ACCESS_KEY=temp
+      - AWS_ACCESS_KEY_ID=temp
+      - HOSTNAME=localstack
+      - EDGE_PORT=4566
+      - LAMBDA_DOCKER_NETWORK=localstack-net
+      - LAMBDA_EXECUTOR=docker
+      - HOSTNAME_EXTERNAL=localstack
+      - LOCALSTACK_HOSTNAME=localstack
     volumes:
       - "${TEMPDIR:-/tmp/localstack}:/tmp/localstack"
       - "/var/run/docker.sock:/var/run/docker.sock"
